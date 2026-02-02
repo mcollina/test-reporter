@@ -4,11 +4,11 @@
   "description": "A custom test reporter for node:test designed for large-scale projects with stuck test detection",
   "main": "reporter/index.js",
   "scripts": {
-    "test": "node --test --test-reporter=./reporter/reporter.js",
-    "test:tap": "node --test",
-    "test:example": "node --test --test-reporter=./reporter/reporter.js example/",
-    "test:ci": "PROGRESS=off SHOW_PASSING=false node --test --test-reporter=./reporter/reporter.js",
-    "test:debug": "DEBUG=1 node --test --test-reporter=./reporter/reporter.js"
+    "test": "node --test --test-reporter=./reporter/reporter.js 'test/**/*.test.js'",
+    "test:tap": "node --test 'test/**/*.test.js'",
+    "test:example": "node --test --test-reporter=./reporter/reporter.js 'example/**/*.test.js'",
+    "test:ci": "PROGRESS=off SHOW_PASSING=false node --test --test-reporter=./reporter/reporter.js 'test/**/*.test.js'",
+    "test:debug": "DEBUG=1 node --test --test-reporter=./reporter/reporter.js 'test/**/*.test.js'"
   },
   "keywords": [
     "nodejs",
