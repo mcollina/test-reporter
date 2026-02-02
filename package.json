@@ -1,0 +1,26 @@
+{
+  "name": "large-scale-test-reporter",
+  "version": "1.0.0",
+  "description": "A custom test reporter for node:test designed for large-scale projects with stuck test detection",
+  "main": "reporter/index.js",
+  "scripts": {
+    "test": "node --test --test-reporter=./reporter/reporter.js",
+    "test:tap": "node --test",
+    "test:example": "node --test --test-reporter=./reporter/reporter.js example/",
+    "test:ci": "PROGRESS=off SHOW_PASSING=false node --test --test-reporter=./reporter/reporter.js",
+    "test:debug": "DEBUG=1 node --test --test-reporter=./reporter/reporter.js"
+  },
+  "keywords": [
+    "nodejs",
+    "test",
+    "reporter",
+    "testing",
+    "node:test",
+    "large-scale"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
