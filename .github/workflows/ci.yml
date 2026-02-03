@@ -24,13 +24,9 @@ jobs:
         run: npm ci || npm install
 
       - name: Run tests with reporter
-        run: npm test
-
-      - name: Run example tests
-        run: npm run test:example || true
-
-      - name: Run tests (TAP format for comparison)
-        run: npm run test:tap
+        run: node --test --test-reporter=./reporter/reporter.js test/*.test.js
+        timeout-minutes: 5
+        shell: bash
 
   lint:
     runs-on: ubuntu-latest
