@@ -1,4 +1,4 @@
-# Large Scale Node.js Test Reporter
+# @matteo.collina/test-reporter
 
 A custom test reporter for `node:test` designed specifically for large-scale projects with hundreds of test files and thousands of tests. Focuses on visibility, progress tracking, and especially diagnosing flaky/stuck tests.
 
@@ -12,11 +12,14 @@ A custom test reporter for `node:test` designed specifically for large-scale pro
 - **🎨 Beautiful TTY output**: Colors, unicode icons, and elegant formatting
 - **📋 Clean CI output**: Line-based, grep-friendly format when piped
 
+## Requirements
+
+- **Node.js 22+** (the reporter uses modern Node.js test runner APIs)
+
 ## Installation
 
 ```bash
-# Clone or copy the reporter directory to your project
-cp -r reporter/ ./your-project/reporter/
+npm install --save-dev @matteo.collina/test-reporter
 ```
 
 ## Usage
@@ -24,7 +27,11 @@ cp -r reporter/ ./your-project/reporter/
 ### Basic Usage
 
 ```bash
-node --test --test-reporter=./reporter/reporter.js
+# After installing
+node --test --test-reporter=@matteo.collina/test-reporter
+
+# Or download and use directly
+node --test --test-reporter=./node_modules/@matteo.collina/test-reporter/reporter/reporter.js
 ```
 
 ### With Options
@@ -34,7 +41,7 @@ Options can be set via environment variables:
 ```bash
 # Set options via environment
 NODE_TEST_REPORTER_OPTIONS="timeout-warning=3000,stuck-threshold=10000,progress=off" \
-  node --test --test-reporter=./reporter/reporter.js
+  node --test --test-reporter=@matteo.collina/test-reporter
 ```
 
 ### With Parallel Execution
@@ -42,7 +49,15 @@ NODE_TEST_REPORTER_OPTIONS="timeout-warning=3000,stuck-threshold=10000,progress=
 The reporter supports parallel test execution:
 
 ```bash
-node --test --test-reporter=./reporter/reporter.js --test-concurrency=4
+node --test --test-reporter=@matteo.collina/test-reporter --test-concurrency=4
+```
+
+### Programmatic Usage
+
+```javascript
+const reporter = require('@matteo.collina/test-reporter');
+
+// Use with node:test runner
 ```
 
 ## Options
@@ -141,25 +156,24 @@ The following tests started but never completed:
 [ 8s]  src/queue/worker.test.ts::Worker > should process jobs
 ```
 
-## Trying the Examples
+## Why This Reporter?
 
-Run the example tests to see the reporter in action:
+### Problem: Stuck Tests in Large Codebases
 
-```bash
-node --test --test-reporter=./reporter/reporter.js example/
-```
+In large projects with hundreds of test files, tests can hang due to:
+- Infinite loops in async code
+- Unawaited promises
+- Database connection deadlocks
+- Network request timeouts
+- Blocking synchronous calls
 
-## Running the Reporter's Own Tests
+**Without visibility**, you just see a hung test runner with no idea which test is stuck.
 
-```bash
-node --test test/
-```
+### Solution: Incomplete Test Detection
 
-Or with the reporter itself (meta!):
+This reporter tracks every test that receives `test:start` and compares it to `test:complete`. If a test never completes (common on SIGINT), it reports exactly which tests were stuck.
 
-```bash
-node --test --test-reporter=./reporter/reporter.js test/
-```
+The longest-running incomplete test is shown last — that's most likely your culprit.
 
 ## Architecture
 
@@ -179,24 +193,9 @@ reporter/
 4. `printer.js` formats output for TTY or non-TTY environments
 5. On `SIGINT`/`SIGTERM`/`exit`, incomplete tests are reported
 
-## Why This Reporter?
+## Contributing
 
-### Problem: Stuck Tests in Large Codebases
-
-In large projects with hundreds of test files, tests can hang due to:
-- Infinite loops in async code
-- Unawaited promises
-- Database connection deadlocks
-- Network request timeouts
-- Blocking synchronous calls
-
-**Without visibility**, you just see a hung test runner with no idea which test is stuck.
-
-### Solution: Incomplete Test Detection
-
-This reporter tracks every test that receives `test:start` and compares it to `test:complete`. If a test never completes (common on SIGINT), it reports exactly which tests were stuck.
-
-The longest-running incomplete test is shown last — that's most likely your culprit.
+Please see the [GitHub repository](https://github.com/mcollina/test-reporter) for source code and issues.
 
 ## License
 

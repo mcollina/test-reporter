@@ -1,8 +1,18 @@
 {
-  "name": "large-scale-test-reporter",
+  "name": "@matteo.collina/test-reporter",
   "version": "1.0.0",
   "description": "A custom test reporter for node:test designed for large-scale projects with stuck test detection",
   "main": "reporter/index.js",
+  "exports": {
+    ".": "./reporter/index.js",
+    "./reporter": "./reporter/reporter.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "reporter/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "test": "node --test --test-reporter=./reporter/reporter.js 'test/**/*.test.js'",
     "test:tap": "node --test 'test/**/*.test.js'",
@@ -16,11 +26,26 @@
     "reporter",
     "testing",
     "node:test",
-    "large-scale"
+    "test-runner",
+    "large-scale",
+    "flaky-tests",
+    "stuck-tests",
+    "cli"
   ],
-  "author": "",
+  "author": "Matteo Collina <hello@matteocollina.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcollina/test-reporter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mcollina/test-reporter/issues"
+  },
+  "homepage": "https://github.com/mcollina/test-reporter#readme",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
